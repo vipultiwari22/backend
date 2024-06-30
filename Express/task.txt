@@ -1,0 +1,9 @@
+REST API - JSON
+
+GET/api/users - List all users - Done
+GET/api/users/1 - Get the user id 1 - Done
+GET/api/users/2 - Get the user id 2 - Done
+
+GET/api/user/:id - Dyanmic Data - Done
+
+POST/api/Users - Create new user 

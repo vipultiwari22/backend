@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
+
 export const connectDB = async () => {
     await mongoose
-        .connect('mongodb+srv://tiwarivipul155:Ry46b8V4H123@vipuldata.r9zjdnt.mongodb.net/ShortURL')
+        .connect(process.env.MONGO_URI)
         .then((conn) => {
             console.log(`connection Established ${conn.connection.host}`);
         })

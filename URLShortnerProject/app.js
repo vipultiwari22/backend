@@ -1,7 +1,10 @@
+import dotenv from 'dotenv'
 import express from 'express'
 import { connectDB } from './Config/connectDB.js'
 import urlRouter from './routes/url.route.js';  // Ensure the correct path
 import URL from './model/url.model.js';
+
+dotenv.config()
 
 const app = express()
 const PORT = 8001

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+      form {
+        width: 20%;
+        gap: 10px;
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        left: 40%;
+        top: 20%;
+        padding: 10px 20px;
+        background-color: aquamarine;
+      }
+      input {
+        width: 70%;
+        height: 20px;
+        border: none;
+        border-radius: 10px;
+      }
+      button {
+        width: 70%;
+        height: 20px;
+        border: none;
+        border-radius: 10px;
+        background-color: blue;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <form action="/user/login" method="post">
+      <h1>Login Page</h1>
+
+      <label for="#">Enter Your Email</label>
+      <input type="text" name="email" required id="" />
+
+      <label for="#">Enter Your Password</label>
+      <input type="text" name="password" required id="" />
+
+      <button type="submit">Login</button>
+    </form>
+  </body>
+</html>

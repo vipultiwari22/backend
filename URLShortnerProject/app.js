@@ -7,7 +7,7 @@ import { connectDB } from "./Config/connectDB.js";
 import urlRouter from "./routes/url.route.js"; // Ensure the correct path
 import URL from "./model/url.model.js";
 import StaticRoute from "./routes/static.route.js";
-
+import UserRouter from "./routes/user.route.js";
 // use Dotenv and execute
 
 dotenv.config();
@@ -35,6 +35,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/url", urlRouter);
 app.use("/", StaticRoute);
+app.use("/user", UserRouter);
 
 // redirect to the url Function
 

@@ -4,9 +4,10 @@ import URL from "../model/url.model.js";
 const routes = express.Router();
 
 routes.get("/", async (req, res) => {
-  const allUrls = await URL.find({});
-  return res.render("Home", {
-    urls: allUrls,
+  if (!req.user) return res.redirect("/login");
+  const allurls = await URL.find({ createdBy: req.user._id });
+  return res.render("home", { 
+    urls: allurls,
   });
 });
 

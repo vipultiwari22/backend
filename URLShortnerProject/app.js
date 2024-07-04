@@ -8,6 +8,8 @@ import urlRouter from "./routes/url.route.js"; // Ensure the correct path
 import URL from "./model/url.model.js";
 import StaticRoute from "./routes/static.route.js";
 import UserRouter from "./routes/user.route.js";
+import cookieParser from "cookie-parser";
+import { UserAuthentication, checkAuth } from "./middleware/auth.middleware.js";
 // use Dotenv and execute
 
 dotenv.config();
@@ -27,14 +29,14 @@ app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
 
 // use json and form data Parser
-
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Urls for the APIs
 
-app.use("/url", urlRouter);
-app.use("/", StaticRoute);
+app.use("/url", UserAuthentication, urlRouter);
+app.use("/", checkAuth, StaticRoute);
 app.use("/user", UserRouter);
 
 // redirect to the url Function

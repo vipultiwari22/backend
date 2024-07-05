@@ -31,9 +31,8 @@ export async function LoginUser(req, res) {
       error: "invalid Username or password",
     });
   }
-  const sessionId = v4();
-  setUser(sessionId, user);
-  res.cookie("uid", sessionId);
+  const token = setUser(user);
+  res.cookie("uid", token);
   return res.redirect("/");
 }
 

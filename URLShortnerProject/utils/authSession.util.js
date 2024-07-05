@@ -1,10 +1,22 @@
-const sessionIdUserMap = new Map();
+import jsonWebToken from "jsonwebtoken";
 
-export function setUser(id, user) {
-  sessionIdUserMap.set(id, user);
+// const sessionIdUserMap = new Map();
+
+export function setUser(user) {
+  return jsonWebToken.sign(
+    {
+      _id: user._id,
+      email: user.email,
+    },
+    process.env.secret_key
+  );
 }
 
-export function getUser(id) {
-  return sessionIdUserMap.get(id);
+export function getUser(token) {
+  if (!token) return null;
+  try {
+    return jsonWebToken.verify(token, process.env.secret_key);
+  } catch (error) {
+    return null;
+  }
 }
-

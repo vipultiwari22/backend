@@ -5,10 +5,15 @@ const routes = express.Router();
 
 routes.get("/", async (req, res) => {
   if (!req.user) return res.redirect("/login");
-  const allurls = await URL.find({ createdBy: req.user._id });
-  return res.render("home", { 
-    urls: allurls,
-  });
+  try {
+    const allurls = await URL.find({ createdBy: req.user._id });
+
+    res.render("Home", {
+      urls: allurls,
+    });
+  } catch (error) {
+    return error;
+  }
 });
 
 routes.get("/singup", (req, res) => {

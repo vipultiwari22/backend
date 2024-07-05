@@ -3,7 +3,7 @@ import { getUser } from "../utils/authSession.util.js";
 export async function UserAuthentication(req, res, next) {
   const userUID = req.cookies.uid;
 
-  if (!userUID) return res.redirect("logi n");
+  if (!userUID) return res.redirect("login");
 
   const user = getUser(userUID);
 

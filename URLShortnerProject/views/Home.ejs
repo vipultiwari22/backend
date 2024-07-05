@@ -37,6 +37,7 @@
             <th>ShortID</th>
             <th>RedirectURL</th>
             <th>Clicks</th>
+            <th>createdBy</th>
           </tr>
           <tbody>
             <% urls.forEach((url,index) => { %>
@@ -45,6 +46,7 @@
               <td><%= url.shortID %></td>
               <td><%= url.redirectURL %></td>
               <td><%= url.visitHistory.length %></td>
+              <td><%= url.createdBy %></td>
             </tr>
             <% }) %>
           </tbody>

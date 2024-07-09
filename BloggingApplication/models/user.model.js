@@ -14,7 +14,6 @@ const userSchema = new mongoose.Schema(
     },
     salt: {
       type: String,
-      required: true,
     },
     password: {
       type: String,
@@ -22,7 +21,7 @@ const userSchema = new mongoose.Schema(
     },
     profileImage: {
       type: String,
-      default: "/images/defualt.png",
+      default: "./images/defualt.png",
     },
     role: {
       type: String,
@@ -40,7 +39,7 @@ userSchema.pre("save", function (next) {
 
   if (!user.isModified("password")) return;
 
-  const salt = randomBytes(16).toString();
+  const salt = "tweekvipulHello";
   const hashedPassword = createHmac("sha256", salt)
     .update(user.password)
     .digest("hex");
@@ -49,6 +48,23 @@ userSchema.pre("save", function (next) {
   this.password = hashedPassword;
 
   next();
+});
+
+userSchema.static("matchPassword", async function (email, password) {
+  const user = await this.findOne({ email });
+
+  if (!user) throw new Error("User not found!");
+
+  const salt = user.salt;
+  const hashedPassword = user.password;
+
+  const userProvider = createHmac("sha256", salt)
+    .update(password)
+    .digest("hex");
+
+  if (hashedPassword !== userProvider) throw new Error("Incorrect Password!");
+
+  return user;
 });
 
 const User = mongoose.model("user", userSchema);

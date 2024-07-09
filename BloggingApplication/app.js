@@ -17,13 +17,13 @@ const PORT = process.env.port;
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
 
+// encoded
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
 // Routes
 
 app.use("/", router);
 app.use("/register", userRouter);
-
-app.get("/", (req, res) => {
-  res.render("Home");
-});
 
 app.listen(PORT, () => console.log(`Server started at port ${PORT}`));

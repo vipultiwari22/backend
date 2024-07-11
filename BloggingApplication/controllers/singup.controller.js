@@ -29,13 +29,15 @@ export async function loginUser(req, res) {
   }
 
   try {
-    // Await the promise returned by the static method
     const token = await User.matchPasswordAndGenrateToken(email, password);
-    // Send the token as a response (or handle it according to your needs)
-    return res.cookie("token", token).redirect("/");
+
+    res.cookie("token", token, { httpOnly: true });
+
+    return res.redirect("/");
   } catch (error) {
-    // Handle errors and send proper response
-    return res.render("singin", {
+    console.error(error.message);
+
+    return res.status(401).render("singin", {
       error: "Incorrect Email or Password",
     });
   }

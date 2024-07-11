@@ -4,6 +4,8 @@ import path from "path";
 import router from "./routes/static.routes.js";
 import userRouter from "./routes/user.routes.js";
 import { connectToDB } from "./config/DB.js";
+import cookieParser from "cookie-parser";
+import checkCookieForAuthentication from "./middleware/authentication.middleware.js";
 dotenv.config();
 
 // DB connection
@@ -18,8 +20,10 @@ app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
 
 // encoded
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(checkCookieForAuthentication("token"));
 
 // Routes
 

@@ -3,7 +3,9 @@ import express from "express";
 const router = express.Router();
 
 router.get("/", (req, res) => {
-  res.render("Home");
+  res.render("Home", {
+    user: req.user,
+  });
 });
 
 router.get("/singin", (req, res) => {

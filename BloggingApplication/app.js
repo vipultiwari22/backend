@@ -1,11 +1,15 @@
 import express from "express";
 import dotenv from "dotenv";
 import path from "path";
-import router from "./routes/static.routes.js";
+import router from "./routes/UserStatic.routes.js";
 import userRouter from "./routes/user.routes.js";
 import { connectToDB } from "./config/DB.js";
 import cookieParser from "cookie-parser";
-import checkCookieForAuthentication from "./middleware/authentication.middleware.js";
+import checkCookieForAuthentication, {
+  AuthUser,
+} from "./middleware/authentication.middleware.js";
+import BlogRouter from "./routes/BlogStatic.routes.js";
+import BlogRoute from "./routes/Blog.routes.js";
 dotenv.config();
 
 // DB connection
@@ -29,5 +33,7 @@ app.use(checkCookieForAuthentication("token"));
 
 app.use("/", router);
 app.use("/register", userRouter);
+app.use("/Blog", AuthUser, BlogRouter);
+app.use("/BlogRoute", AuthUser, BlogRoute);
 
 app.listen(PORT, () => console.log(`Server started at port ${PORT}`));

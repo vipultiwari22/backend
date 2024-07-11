@@ -18,11 +18,11 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
         <% if (locals.user) { %>
         <li class="nav-item">
-          <a class="nav-link" href="#">Add Blog</a>
+          <a class="nav-link" href="/Blog/addBlog">Add Blog</a>
         </li>
 
         <li class="nav-item dropdown">
@@ -33,10 +33,10 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            Vipul Tiwari
+            <%= locals.user.fullName %>
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Logout</a></li>
+            <li><a class="dropdown-item" href="/register/logout">Logout</a></li>
           </ul>
         </li>
         <% } else {%>

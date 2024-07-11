@@ -43,6 +43,10 @@ export async function loginUser(req, res) {
   }
 }
 
+export async function logout(req, res) {
+  res.clearCookie("token").redirect("/");
+}
+
 export async function getAllUser(req, res) {
   const users = await User.find({}, "-password");
 

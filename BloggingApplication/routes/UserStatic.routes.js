@@ -1,4 +1,5 @@
 import express from "express";
+import checkCookieForAuthentication from "../middleware/authentication.middleware.js";
 
 const router = express.Router();
 

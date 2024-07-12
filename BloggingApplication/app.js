@@ -28,6 +28,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(checkCookieForAuthentication("token"));
+app.use(express.static(path.resolve("./public")));
 
 // Routes
 

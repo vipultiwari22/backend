@@ -1,11 +1,13 @@
 import express from "express";
-import checkCookieForAuthentication from "../middleware/authentication.middleware.js";
+import BLOG from "../models/BlogContent.model.js";
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
+  const allBlogs = await BLOG.find({});
   res.render("Home", {
     user: req.user,
+    blogs: allBlogs,
   });
 });
 

@@ -1,8 +1,9 @@
 import User from "../models/user.model.js";
+import jwt from "jsonwebtoken";
 
 export async function createuser(req, res, next) {
   try {
-    const { fullName, email, password, profileImage } = req.body;
+    const { fullName, email, password } = req.body;
 
     if (!fullName || !email || !password) {
       return "All fields are Mandatory!";
@@ -47,12 +48,34 @@ export async function logout(req, res) {
   res.clearCookie("token").redirect("/");
 }
 
-export async function getAllUser(req, res) {
-  const users = await User.find({}, "-password");
+export const EditUserProfile = async (req, res) => {
+  try {
+    const userId = req.params.id;
 
-  if (!users) return "User not found!";
+    const { fullName, email, role, recent, mostViewed } = req.body;
 
-  return res.status(200).json({
-    users,
-  });
-}
+    const profileImage = req.file
+      ? `/uploads/${req.file.filename}`
+      : req.user.profileImage;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        fullName,
+        email,
+        role,
+        recent,
+        mostViewed,
+        profileImage,
+      },
+      { new: true }
+    );
+
+    req.user = updatedUser;
+
+    res.redirect("/profile");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server Error");
+  }
+};

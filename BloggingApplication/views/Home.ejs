@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <style>
+      .container {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 20px;
+        background-color: antiquewhite;
+      }
+      .card {
+        height: 300px;
+        width: 400px;
+      }
+    </style>
     <title>HOME PAGE</title>
     <%- include('./partials/head') %>
   </head>
@@ -8,13 +20,14 @@
     <%- include('./partials/nav') %>
     <div class="container mt-3">
       <% blogs.forEach(blog => { %>
-      <div class="card" style="width: 18rem">
+      <div class="card">
         <img src="<%= blog.coverImage %>" class="card-img-top" alt="..." />
         <div class="card-body">
           <h5 class="card-title"><%= blog.title %></h5>
         </div>
         <div class="card-body">
           <h5 class="card-title"><%= blog.body %></h5>
+          <p class="card-title">Created by: <%= blog.createdBy.fullName %></p>
           <a href="/blog/<%= blog._id %>" class="btn btn-primary">View</a>
         </div>
       </div>

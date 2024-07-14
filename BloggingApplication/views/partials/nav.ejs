@@ -16,7 +16,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav me-auto">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
@@ -46,11 +46,19 @@
         <li class="nav-item">
           <a class="nav-link" href="/singin">Login</a>
         </li>
-        <%}%>
+        <% } %>
       </ul>
+      <% if (locals.user) { %>
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/profile">Profile</a>
+        </li>
+      </ul>
+      <% } %>
     </div>
   </div>
 </nav>
+
 <% if (locals.error) { %>
 <div class="container mt-4">
   <div class="alert alert-danger" role="alert"><%= locals.error %></div>

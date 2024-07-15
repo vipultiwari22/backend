@@ -24,6 +24,35 @@ export async function newBlogCreate(req, res) {
   }
 }
 
+export const EditBlog = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const { body, title } = req.body;
+
+    const coverImage = req.file
+      ? `/uploads/${req.file.filename}`
+      : req.user.coverImage;
+
+    const updatedBlog = await BLOG.findByIdAndUpdate(
+      userId,
+      {
+        body,
+        title,
+        coverImage,
+      },
+      { new: true }
+    );
+
+    // req.user = updatedBlog;
+
+    res.redirect("/");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server Error");
+  }
+};
+
 export const getAllBlog = async (req, res) => {
   const blog = await BLOG.find({});
   return res.status(200).json({ message: "All Blogs" + blog });

@@ -29,6 +29,11 @@
           <h5 class="card-title"><%= blog.body %></h5>
           <p class="card-title">Created by: <%= blog.createdBy.fullName %></p>
           <a href="/blog/<%= blog._id %>" class="btn btn-primary">View</a>
+          <% if (locals.user) { %>
+          <a href="/Blog/editBlog/<%= blog._id %>" class="btn btn-primary"
+            >Edit</a
+          >
+          <% } %>
         </div>
       </div>
       <% }) %>

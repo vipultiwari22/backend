@@ -14,7 +14,6 @@ BlogRouter.get("/editBlog/:id", AuthUser, async (req, res) => {
   try {
     const BlogId = req.params.id;
     const allblog = await BLOG.findById(BlogId);
-    console.log("blogById", allblog.coverImage);
 
     if (!allblog) {
       return res.status(404).send("Blog not found");

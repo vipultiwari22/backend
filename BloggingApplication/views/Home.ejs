@@ -28,10 +28,15 @@
         <div class="card-body">
           <h5 class="card-title"><%= blog.body %></h5>
           <p class="card-title">Created by: <%= blog.createdBy.fullName %></p>
-          <a href="/blog/<%= blog._id %>" class="btn btn-primary">View</a>
+          <a href="/BlogRoute/view-Blog/<%= blog._id %>" class="btn btn-primary"
+            >View</a
+          >
           <% if (locals.user) { %>
           <a href="/Blog/editBlog/<%= blog._id %>" class="btn btn-primary"
             >Edit</a
+          >
+          <a href="/BlogRoute/del-Blog/<%= blog._id %>" class="btn btn-primary"
+            >Delete</a
           >
           <% } %>
         </div>

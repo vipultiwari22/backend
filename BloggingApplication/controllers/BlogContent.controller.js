@@ -18,7 +18,7 @@ export async function newBlogCreate(req, res) {
       coverImage: `./uploads/${req.file.filename}`,
     });
 
-    return res.redirect(`/blog/${Blog._id}`);
+    return res.redirect(`/`);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -44,12 +44,33 @@ export const EditBlog = async (req, res) => {
       { new: true }
     );
 
-    // req.user = updatedBlog;
-
     res.redirect("/");
   } catch (error) {
     console.error(error);
     res.status(500).send("Server Error");
+  }
+};
+
+export const ViewBlog = async (req, res) => {
+  try {
+    const BlogId = req.params.id;
+    const blog = await BLOG.findById(BlogId);
+    if (!blog) return res.status(400).json({ message: "Blog Not Found!" });
+    return res.status(200).json({ message: "Found", blog });
+  } catch (error) {
+    console.log(error);
+    return res.status(200).json({ message: "Server Error", error });
+  }
+};
+
+export const DeleteBlog = async (req, res) => {
+  try {
+    const BlogId = req.params.id;
+    const del = await BLOG.findByIdAndDelete(BlogId);
+    if (!del) return res.status(400).json({ message: "Blog Not Found!" });
+    return res.redirect("/");
+  } catch (error) {
+    console.log(error);
   }
 };
 

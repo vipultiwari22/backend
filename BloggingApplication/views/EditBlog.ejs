@@ -8,7 +8,7 @@
     <%- include('./partials/nav') %>
     <div class="container mt-3">
       <form
-        action="/BlogRoute/Edit-blog/<%= allblog._id %>"
+        action="/BlogRoute/update-blog/<%= allblog._id %>"
         method="post"
         enctype="multipart/form-data"
       >
@@ -19,7 +19,7 @@
             src="<%= allblog.coverImage %>"
             alt="Cover Image"
             class="img-fluid my-5 avatar-image"
-            style="width: 100%; cursor: pointer"
+            style="width: 50%; height: 50%; cursor: pointer"
             onclick="document.getElementById('coverImage').click();"
           />
 
@@ -52,7 +52,6 @@
         </div>
       </form>
     </div>
-    <%- include('./partials/script') %>
     <script>
       function previewFile() {
         const preview = document.getElementById("coverImagePreview");
@@ -71,7 +70,7 @@
           reader.readAsDataURL(file);
         }
       }
-      console.log("<%= allblog.coverImage %>");
     </script>
+    <%- include('./partials/script') %>
   </body>
 </html>

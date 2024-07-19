@@ -3,6 +3,22 @@
   <head>
     <title>Edit Blog Page</title>
     <%- include('./partials/head') %>
+    <style>
+      #coverImagePreview {
+        width: 100%;
+        height: auto;
+        max-height: 500px;
+        object-fit: cover;
+        cursor: pointer;
+        border-radius: 10px;
+        transition: transform 0.2s;
+      }
+
+      #coverImagePreview:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+    </style>
   </head>
   <body>
     <%- include('./partials/nav') %>
@@ -13,13 +29,12 @@
         enctype="multipart/form-data"
       >
         <div class="mb-3">
-          <label for="coverImage" class="form-label">Cover Image</label>
+          <label for="coverImage" class="form-label"></label>
           <img
             id="coverImagePreview"
             src="<%= allblog.coverImage %>"
             alt="Cover Image"
-            class="img-fluid my-5 avatar-image"
-            style="width: 50%; height: 50%; cursor: pointer"
+            class="img-fluid"
             onclick="document.getElementById('coverImage').click();"
           />
 

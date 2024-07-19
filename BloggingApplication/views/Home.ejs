@@ -9,11 +9,21 @@
         background-color: antiquewhite;
       }
       .card {
-        height: 300px;
-        width: 400px;
+        height: auto;
+        width: 100%;
+      }
+      .card-img-top {
+        height: 200px;
+        object-fit: cover;
+      }
+      .card-text {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 4; /* Number of lines to show */
+        overflow: hidden;
       }
     </style>
-    <title>HOME PAGE</title>
+    <title>Home Page</title>
     <%- include('./partials/head') %>
   </head>
   <body>
@@ -21,21 +31,26 @@
     <div class="container mt-3">
       <% blogs.forEach(blog => { %>
       <div class="card">
-        <img src="<%= blog.coverImage %>" class="card-img-top" alt="..." />
+        <img
+          src="<%= blog.coverImage %>"
+          class="card-img-top"
+          alt="<%= blog.title %>"
+        />
         <div class="card-body">
           <h5 class="card-title"><%= blog.title %></h5>
-        </div>
-        <div class="card-body">
-          <h5 class="card-title"><%= blog.body %></h5>
-          <p class="card-title">Created by: <%= blog.createdBy.fullName %></p>
+          <p class="card-text"><%= blog.body %></p>
           <a href="/BlogRoute/view-Blog/<%= blog._id %>" class="btn btn-primary"
-            >View</a
+            >Read More</a
           >
+          <p class="card-title">Created by: <%= blog.createdBy.fullName %></p>
           <% if (locals.user) { %>
           <a href="/Blog/editBlog/<%= blog._id %>" class="btn btn-primary"
             >Edit</a
           >
-          <a href="/BlogRoute/del-Blog/<%= blog._id %>" class="btn btn-primary"
+          <a href="/BlogRoute/view-Blog/<%= blog._id %>" class="btn btn-primary"
+            >view</a
+          >
+          <a href="/BlogRoute/del-Blog/<%= blog._id %>" class="btn btn-danger"
             >Delete</a
           >
           <% } %>

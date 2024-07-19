@@ -1,0 +1,41 @@
+<title>View Blog</title>
+<%- include('./partials/head') %>
+<style>
+  .card-img-top {
+    height: 500px;
+    object-fit: cover;
+  }
+</style>
+
+<%- include('./partials/nav') %>
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <div class="card">
+        <img
+          src="<%= blog.coverImage %>"
+          class="card-img-top"
+          alt="<%= blog.title %>"
+        />
+        <div class="card-body">
+          <h3 class="card-title"><%= blog.title %></h3>
+          <p class="card-text"><%= blog.body %></p>
+        </div>
+        <div
+          class="card-footer text-muted d-flex justify-content-between align-items-center"
+        >
+          <p class="mb-0">Created by: <%= blog.createdBy.fullName %></p>
+          <p class="mb-0">
+            Created at: <%= new Date(blog.createdAt).toLocaleString() %>
+          </p>
+          <p class="mb-0">
+            Updated at: <%= new Date(blog.updatedAt).toLocaleString() %>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('./partials/script') %>

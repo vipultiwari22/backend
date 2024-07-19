@@ -54,9 +54,12 @@ export const EditBlog = async (req, res) => {
 export const ViewBlog = async (req, res) => {
   try {
     const BlogId = req.params.id;
-    const blog = await BLOG.findById(BlogId);
+    const blog = await BLOG.findById(BlogId).populate("createdBy");
     if (!blog) return res.status(400).json({ message: "Blog Not Found!" });
-    return res.status(200).json({ message: "Found", blog });
+    return res.render("view-Blog", {
+      blog,
+      user: req.user,
+    });
   } catch (error) {
     console.log(error);
     return res.status(200).json({ message: "Server Error", error });

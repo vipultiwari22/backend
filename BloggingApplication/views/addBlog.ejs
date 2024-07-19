@@ -3,6 +3,16 @@
   <head>
     <title>ADD NEW BLOG PAGE</title>
     <%- include('./partials/head') %>
+    <script>
+      tinymce.init({
+        selector: "#body",
+        menubar: false,
+        plugins: "link image code",
+        toolbar:
+          "undo redo | bold italic | alignleft aligncenter alignright | code",
+        branding: false,
+      });
+    </script>
   </head>
   <body>
     <%- include('./partials/nav') %>
@@ -13,7 +23,7 @@
         enctype="multipart/form-data"
       >
         <div class="mb-3">
-          <label for="coverImage" class="form-label">CoverImage</label>
+          <label for="coverImage" class="form-label">Cover Image</label>
           <input
             type="file"
             class="form-control"

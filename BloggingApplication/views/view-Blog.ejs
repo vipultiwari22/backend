@@ -1,44 +1,153 @@
-<title>View Blog</title>
-<%- include('./partials/head') %>
-<style>
-  .card-img-top {
-    height: 500px;
-    object-fit: cover;
-  }
-  .blog-content {
-    white-space: pre-wrap;
-  }
-</style>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>View Blog</title>
+    <%- include('./partials/head') %>
+    <style>
+      .card-img-top {
+        height: 500px;
+        object-fit: cover;
+      }
+      .blog-content {
+        white-space: pre-wrap;
+      }
+      .comment-section {
+        margin-top: 30px;
+      }
+      .comment {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+      .comment img {
+        border-radius: 50%;
+        margin-right: 15px;
+      }
+      .comment-content {
+        background: #f1f1f1;
+        padding: 10px;
+        border-radius: 10px;
+        width: 100%;
+      }
+      .comment-form {
+        display: flex;
+        align-items: center;
+        margin-top: 20px;
+      }
+      .comment-form img {
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+      .comment-form input {
+        flex: 1;
+        margin-right: 10px;
+      }
+      .comment-form button {
+        flex-shrink: 0;
+      }
+      .load-more {
+        text-align: center;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <%- include('./partials/nav') %>
 
-<%- include('./partials/nav') %>
-
-<div class="container mt-5">
-  <div class="row">
-    <div class="col-md-8 offset-md-2">
-      <div class="card">
-        <img
-          src="<%= blog.coverImage %>"
-          class="card-img-top"
-          alt="<%= blog.title %>"
-        />
-        <div class="card-body">
-          <h3 class="card-title"><%= blog.title %></h3>
-          <div class="blog-content"><%= blog.body %></div>
-        </div>
-        <div
-          class="card-footer text-muted d-flex justify-content-between align-items-center"
-        >
-          <p class="mb-0">Created by: <%= blog.createdBy.fullName %></p>
-          <p class="mb-0">
-            Created at: <%= new Date(blog.createdAt).toLocaleString() %>
-          </p>
-          <p class="mb-0">
-            Updated at: <%= new Date(blog.updatedAt).toLocaleString() %>
-          </p>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-md-8 offset-md-2">
+          <div class="card">
+            <img
+              src="<%= blog.coverImage %>"
+              class="card-img-top"
+              alt="<%= blog.title %>"
+            />
+            <div class="card-body">
+              <h3 class="card-title"><%= blog.title %></h3>
+              <div class="blog-content"><%= blog.body %></div>
+            </div>
+            <div
+              class="card-footer text-muted d-flex justify-content-between align-items-center"
+            >
+              <p class="mb-0">Created by: <%= blog.createdBy.fullName %></p>
+              <p class="mb-0">
+                Created at: <%= new Date(blog.createdAt).toLocaleString() %>
+              </p>
+              <p class="mb-0">
+                Updated at: <%= new Date(blog.updatedAt).toLocaleString() %>
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<%- include('./partials/script') %>
+    <div class="container comment-section">
+      <h4>Comments</h4>
+      <div id="comment-list">
+        <% comments.slice(0, 5).forEach(comment => { %>
+        <div class="comment">
+          <img
+            src="<%= comment.createdBy.profileImage %>"
+            x
+            alt="avatar"
+            width="40"
+            height="40"
+          />
+          <div class="comment-content">
+            <strong><%= comment.createdBy.fullName %></strong>
+            <p><%= comment.content %></p>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+      <% if (comments.length > 5) { %>
+      <div class="load-more">
+        <button id="load-more-btn" class="btn btn-secondary">
+          Load more comments
+        </button>
+      </div>
+      <% } %> <% if (locals.user) { %>
+      <form
+        action="/BlogRoute/comment/<%= blog._id %>"
+        method="post"
+        class="comment-form"
+      >
+        <img
+          src="<%= user.profileImage %>"
+          alt="avatar"
+          width="40"
+          height="40"
+        />
+        <input
+          type="text"
+          placeholder="Enter Your Comment"
+          name="content"
+          id="content"
+          class="form-control"
+        />
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      <% } %>
+
+      <div class="conatainer mt-5"></div>
+    </div>
+
+    <%- include('./partials/script') %>
+    <script>
+      document
+        .getElementById("load-more-btn")
+        .addEventListener("click", function () {
+          const commentList = document.getElementById("comment-list");
+          const hiddenComments = Array.from(commentList.children).slice(5);
+
+          hiddenComments.forEach((comment) => {
+            comment.style.display = "block";
+          });
+
+          this.style.display = "none";
+        });
+    </script>
+  </body>
+</html>

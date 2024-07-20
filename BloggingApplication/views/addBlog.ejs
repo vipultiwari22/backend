@@ -3,16 +3,6 @@
   <head>
     <title>ADD NEW BLOG PAGE</title>
     <%- include('./partials/head') %>
-    <script>
-      tinymce.init({
-        selector: "#body",
-        menubar: false,
-        plugins: "link image code",
-        toolbar:
-          "undo redo | bold italic | alignleft aligncenter alignright | code",
-        branding: false,
-      });
-    </script>
   </head>
   <body>
     <%- include('./partials/nav') %>
@@ -24,12 +14,26 @@
       >
         <div class="mb-3">
           <label for="coverImage" class="form-label">Cover Image</label>
-          <input
-            type="file"
-            class="form-control"
-            id="coverImage"
-            name="coverImage"
-          />
+          <div class="cover-image-container">
+            <img
+              id="coverImagePreview"
+              src=""
+              alt="Cover Image"
+              class="img-fluid"
+              onclick="document.getElementById('coverImage').click();"
+            />
+            <input
+              type="file"
+              class="form-control"
+              id="coverImage"
+              name="coverImage"
+              style="display: none"
+              onchange="previewFile()"
+            />
+            <div id="placeholderText" class="placeholder-text">
+              Click or Drag to Upload Image
+            </div>
+          </div>
         </div>
         <div class="mb-3">
           <label for="title" class="form-label">Title</label>
@@ -53,3 +57,61 @@
     <%- include('./partials/script') %>
   </body>
 </html>
+<script>
+  tinymce.init({
+    selector: "#body",
+    menubar: false,
+    plugins: "link image code",
+    toolbar:
+      "undo redo | bold italic | alignleft aligncenter alignright | code",
+    branding: false,
+  });
+
+  function previewFile() {
+    const preview = document.getElementById("coverImagePreview");
+    const placeholderText = document.getElementById("placeholderText");
+    const file = document.getElementById("coverImage").files[0];
+    const reader = new FileReader();
+
+    reader.addEventListener(
+      "load",
+      function () {
+        preview.src = reader.result;
+        placeholderText.style.display = "none";
+      },
+      false
+    );
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  }
+</script>
+<style>
+  .cover-image-container {
+    position: relative;
+    width: 100%;
+    height: 200px; /* Adjust as needed */
+    border: 2px dashed #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #coverImagePreview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+  }
+
+  .placeholder-text {
+    position: absolute;
+    color: #aaa;
+    text-align: center;
+    font-size: 16px;
+    pointer-events: none;
+  }
+</style>

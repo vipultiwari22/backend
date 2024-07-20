@@ -1,4 +1,5 @@
 import BLOG from "../models/BlogContent.model.js";
+import Comment from "../models/comment.model.js";
 
 export async function newBlogCreate(req, res) {
   const { title, body, coverImage } = req.body;
@@ -55,10 +56,16 @@ export const ViewBlog = async (req, res) => {
   try {
     const BlogId = req.params.id;
     const blog = await BLOG.findById(BlogId).populate("createdBy");
+    const comments = await Comment.find({ blogId: req.params.id }).populate(
+      "createdBy"
+    );
+
     if (!blog) return res.status(400).json({ message: "Blog Not Found!" });
+
     return res.render("view-Blog", {
       blog,
       user: req.user,
+      comments,
     });
   } catch (error) {
     console.log(error);
@@ -69,11 +76,51 @@ export const ViewBlog = async (req, res) => {
 export const DeleteBlog = async (req, res) => {
   try {
     const BlogId = req.params.id;
-    const del = await BLOG.findByIdAndDelete(BlogId);
-    if (!del) return res.status(400).json({ message: "Blog Not Found!" });
-    return res.redirect("/");
+    const userId = req.user._id; // Assuming `req.user` is set by authentication middleware
+
+    // Find the blog by ID
+    const blog = await BLOG.findById(BlogId);
+
+    if (!blog) {
+      return res.status(404).json({ message: "Blog Not Found!" });
+    }
+
+    // Check if the blog belongs to the logged-in user
+    if (blog.createdBy.toString() !== userId) {
+      return res
+        .status(403)
+        .json({ message: "Unauthorized to delete this blog!" });
+    }
+
+    // Delete the blog
+    await BLOG.findByIdAndDelete(BlogId);
+
+    return res.status(200).json({ message: "Blog deleted successfully!" });
   } catch (error) {
-    console.log(error);
+    console.error("Error deleting blog:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const commentByUser = async (req, res) => {
+  try {
+    const { content } = req.body;
+    const blogId = req.params.id;
+
+    if (!content) {
+      return res.status(400).json({ message: "Content field is required!" });
+    }
+
+    const comment = await Comment.create({
+      content,
+      blogId,
+      createdBy: req.user._id,
+    });
+
+    return res.redirect(`/BlogRoute/view-Blog/${blogId}`);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 

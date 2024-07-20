@@ -80,12 +80,17 @@
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include", // Ensure cookies are sent with the request
         });
+
         if (response.ok) {
           alert("Blog deleted successfully!");
           window.location.reload();
         } else {
-          alert("Failed to delete the blog.");
+          const errorData = await response.json();
+          alert(
+            `Failed to delete the blog: ${errorData.message || "Unknown error"}`
+          );
         }
       } catch (error) {
         console.error("Error deleting blog:", error);

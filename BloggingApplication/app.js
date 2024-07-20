@@ -29,14 +29,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(checkCookieForAuthentication("token"));
 app.use(express.static(path.resolve("./public")));
-app.use('/uploads', express.static(path.join("./public", 'uploads')));
-
+app.use("/uploads", express.static(path.join("./public", "uploads")));
 
 // Routes
 
 app.use("/", router);
 app.use("/register", userRouter);
 app.use("/Blog", AuthUser, BlogRouter);
-app.use("/BlogRoute", AuthUser, BlogRoute);
+app.use("/BlogRoute", BlogRoute);
 
 app.listen(PORT, () => console.log(`Server started at port ${PORT}`));

@@ -16,7 +16,7 @@ dotenv.config();
 connectToDB();
 
 const app = express();
-const PORT = process.env.port;
+const PORT = process.env.PORT;
 
 // views
 

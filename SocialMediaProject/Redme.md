@@ -9,7 +9,6 @@ Key Features
 <h3>Registration:</h3> Users can register using email and password.
 
 <h3>Login:</h3> Users can log in with their credentials.
-<h3></h3> Users can log in with their credentials.
 <h3>JWT Authentication:</h3> Use JSON Web Tokens (JWT) for secure authentication.
 <h3>Role-Based Access Control:</h3> Differentiate between regular users and admins.
 

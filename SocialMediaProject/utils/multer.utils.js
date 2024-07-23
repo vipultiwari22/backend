@@ -1,13 +1,19 @@
 import multer from "multer";
-import path from "path";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import { v2 as cloudinary } from "cloudinary";
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.resolve(`./public/uploads/`));
-  },
-  filename: function (req, file, cb) {
-    const fileName = `${Date.now()}-${file.originalname}`;
-    cb(null, fileName);
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "uploads",
+    format: async (req, file) => {
+      const extension = file.mimetype.split("/")[1];
+      return extension === "jpeg" ? "jpg" : extension;
+    },
+    public_id: (req, file) => `${Date.now()}-${file.originalname}`,
+    resource_type: (req, file) => {
+      return file.mimetype.startsWith("video") ? "video" : "image";
+    },
   },
 });
 

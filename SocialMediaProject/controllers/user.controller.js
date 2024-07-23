@@ -93,57 +93,32 @@ export async function logout(req, res) {
 }
 
 export const EditProfile = async (req, res) => {
-  const {
-    FullName,
-    email,
-    bio,
-    instagram,
-    facebook,
-    linkdin,
-    phoneNo,
-    designation,
-    role,
-  } = req.body;
+  try {
+    const { id } = req.params;
+    const { fullName, email, phoneNo, facebook, instagram, linkedin, bio } =
+      req.body;
 
-  // if (
-  //   !FullName ||
-  //   !email ||
-  //   !phoneNo ||
-  //   !profileImage ||
-  //   !bio ||
-  //   !linkdin ||
-  //   !instagram ||
-  //   !designation ||
-  //   !facebook
-  // )
-  //   return res.status(400).json({ message: "Fileds are required" });
+    const profileImage = req.file ? req.file.path : req.user.profileImage;
 
-  const userId = req.params.id;
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      {
+        fullName,
+        email,
+        phoneNo,
+        socialLinks: {
+          facebook,
+          instagram,
+          linkedin,
+        },
+        bio,
+        profileImage,
+      },
+      { new: true }
+    );
 
-  if (!userId) return res.status(400).json({ message: "User not found!" });
-
-  const profileImage = req.file
-    ? `/uploads/${req.file.filename}`
-    : req.user.profileImage;
-
-  const update = await User.findByIdAndUpdate(
-    userId,
-    {
-      profileImage,
-      FullName,
-      email,
-      bio,
-      instagram,
-      facebook,
-      linkdin,
-      phoneNo,
-      designation,
-      role,
-    },
-    { new: true }
-  );
-
-  req.user = update;
-
-  return res.redirect("/profile");
+    return res.redirect("/Profile");
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 };

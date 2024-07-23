@@ -11,6 +11,7 @@ import {
   authorize,
   checkCookieForSettingUserGlobally,
 } from "./middleware/Auth.middlware.js";
+import POSTRoute from "./routes/post.routes.js";
 dotenv.config();
 
 connectToDataBase();
@@ -39,5 +40,6 @@ app.use("/uploads", express.static(path.join("./public", "uploads")));
 
 app.use("/api/v1/user", router);
 app.use("/", StaticRoute);
+app.use("/post", authenticate, POSTRoute);
 
 app.listen(PORT, () => console.log(`Server is Running At PORT ${PORT}`));

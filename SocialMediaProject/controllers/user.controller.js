@@ -117,6 +117,8 @@ export const EditProfile = async (req, res) => {
       { new: true }
     );
 
+    req.user = updatedUser;
+
     return res.redirect("/Profile");
   } catch (error) {
     res.status(500).send(error.message);

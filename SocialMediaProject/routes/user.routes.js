@@ -12,6 +12,6 @@ const router = express.Router();
 router.post("/Singup", Singup);
 router.post("/login", login);
 router.get("/Logout", logout);
-router.post("/update-profile/:id", upload.single("profileImage"), EditProfile);
+router.post("/update-profile/:id", upload.single("postImage"), EditProfile);
 
 export default router;

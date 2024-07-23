@@ -1,12 +1,26 @@
 import express from "express";
 import { authenticate } from "../middleware/Auth.middlware.js";
 import User from "../models/User.model.js";
+import PostArtical from "../models/Post.model.js";
 
 const StaticRoute = express.Router();
 
-StaticRoute.get("/", (req, res) => {
+StaticRoute.get("/", async (req, res) => {
+  const AllPost = await PostArtical.find({})
+    .populate({
+      path: "createdBy",
+      select: "FullName profileImage email", // Specify fields you want from the User
+    })
+    .select("postBio postImage") // Specify fields you want from the PostArtical
+    .exec();
+
+  if (!AllPost || AllPost.length === 0) {
+    return res.status(400).json({ message: "Post is Not Available!" });
+  }
+
   res.render("Home", {
     user: req.user,
+    AllPost,
   });
 });
 

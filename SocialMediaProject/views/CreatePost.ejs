@@ -1,0 +1,65 @@
+<form
+  action="/post/create-post"
+  method="post"
+  enctype="multipart/form-data"
+  id="postForm"
+>
+  <div class="mb-3">
+    <textarea
+      class="form-control"
+      rows="3"
+      placeholder="What's on your mind?"
+      name="postBio"
+    ></textarea>
+  </div>
+  <div class="mb-3">
+    <input
+      type="file"
+      id="mediaUpload"
+      name="postImage"
+      accept="image/*,video/*"
+      style="display: none"
+    />
+    <label for="mediaUpload" class="btn btn-secondary">
+      <i class="bi bi-plus"></i> Add Media
+    </label>
+    <div id="mediaPreview" class="mt-2"></div>
+  </div>
+  <button type="submit" class="btn btn-primary">Post</button>
+</form>
+
+<!-- Add these styles and script -->
+<style>
+  #mediaPreview img {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+  }
+  #mediaPreview video {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+  }
+</style>
+
+<script>
+  document
+    .getElementById("mediaUpload")
+    .addEventListener("change", function (event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const mediaPreview = document.getElementById("mediaPreview");
+          mediaPreview.innerHTML = "";
+
+          if (file.type.startsWith("image/")) {
+            mediaPreview.innerHTML = `<img src="${e.target.result}" alt="Selected image" />`;
+          } else if (file.type.startsWith("video/")) {
+            mediaPreview.innerHTML = `<video controls><source src="${e.target.result}" type="${file.type}" /></video>`;
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+</script>

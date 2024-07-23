@@ -7,6 +7,107 @@
     <%- include('./partials/head') %>
   </head>
   <body>
-    <%- include('./partials/nav') %> <%- include('./partials/script') %>
+    <%- include('./partials/nav') %>
+    <div class="container-fluid mt-4">
+      <div class="row homePage">
+        <!-- Profile Section for Logged-in Users -->
+        <% if (locals.user) { %>
+        <div class="col-md-3 profile-section text-center">
+          <img src="<%= locals.user.profileImage %>" alt="Profile Image" />
+          <h5 class="mt-2"><%= locals.user.FullName %></h5>
+          <p><%= locals.user.email %></p>
+        </div>
+        <% } %>
+
+        <!-- Main Feed -->
+        <div class="col-md-6">
+          <!-- New Post Form for Logged-in Users -->
+          <% if (locals.user) { %>
+          <div class="card mb-4">
+            <div class="card-body"><%- include('./CreatePost') %></div>
+          </div>
+          <% } %>
+
+          <!-- Display Posts -->
+          <% locals.AllPost.forEach(post => { %>
+          <div class="card post">
+            <div class="card-body">
+              <% if (locals.user) { %>
+              <div class="d-flex">
+                <img
+                  src="<%= locals.user.profileImage %>"
+                  alt="User Image"
+                  class="me-3 col-md-3 profile-section text-center"
+                  style="border-radius: 50%; height: 50px; width: 50px"
+                />
+                <div>
+                  <h5 class="card-title"><%= locals.user.FullName %></h5>
+                  <h6 class="card-subtitle mb-2 text-muted">
+                    <%= locals.user.email %>
+                  </h6>
+                </div>
+              </div>
+              <% } %>
+              <p class="card-text"><%= post.postBio %></p>
+              <img src="<%= post.postImage %>" alt="Post Image" />
+              <div class="mt-2">
+                <button class="btn btn-outline-primary btn-sm">Like</button>
+                <button class="btn btn-outline-secondary btn-sm">
+                  Comment
+                </button>
+                <button class="btn btn-outline-success btn-sm">Share</button>
+              </div>
+            </div>
+          </div>
+          <% }) %>
+
+          <!-- Add more posts as needed -->
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-md-3">
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title">Trending</h5>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">#TrendingTopic1</li>
+                <li class="list-group-item">#TrendingTopic2</li>
+                <li class="list-group-item">#TrendingTopic3</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Suggested Friends</h5>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">Friend 1</li>
+                <li class="list-group-item">Friend 2</li>
+                <li class="list-group-item">Friend 3</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%- include('./partials/script') %>
   </body>
 </html>
+
+<style>
+  .homePage {
+    display: flex;
+    justify-content: space-evenly;
+  }
+  .profile-section img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+  }
+  .post img {
+    max-width: 100%;
+  }
+  .post {
+    margin-bottom: 20px;
+  }
+</style>

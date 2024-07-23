@@ -14,7 +14,7 @@ const UserSchema = new mongoose.Schema(
     },
     profileImage: {
       type: String,
-      default: "./images/default.png",
+      default: "./images/defualt.png",
     },
     role: {
       type: String,
@@ -25,9 +25,55 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "Nothing",
     },
+    bio: {
+      type: String,
+      default: "BIO",
+    },
+    phoneNo: {
+      type: String,
+      required: true,
+      validate: {
+        validator: function (v) {
+          return /\d{10}/.test(v); // Assuming a 10-digit phone number format
+        },
+        message: (props) => `${props.value} is not a valid phone number!`,
+      },
+    },
     password: {
       type: String,
       required: true,
+    },
+    socialLinks: {
+      facebook: {
+        type: String,
+        validate: {
+          validator: function (v) {
+            return /^(https?:\/\/)?((w{3}\.)?)facebook.com(\/.*)?$/i.test(v);
+          },
+          message: (props) => `${props.value} is not a valid Facebook URL!`,
+        },
+        default: "https://facebook.com",
+      },
+      instagram: {
+        type: String,
+        validate: {
+          validator: function (v) {
+            return /^(https?:\/\/)?((w{3}\.)?)instagram.com(\/.*)?$/i.test(v);
+          },
+          message: (props) => `${props.value} is not a valid Instagram URL!`,
+        },
+        default: "https://instagram.com",
+      },
+      linkedin: {
+        type: String,
+        validate: {
+          validator: function (v) {
+            return /^(https?:\/\/)?((w{3}\.)?)linkedin.com(\/.*)?$/i.test(v);
+          },
+          message: (props) => `${props.value} is not a valid LinkedIn URL!`,
+        },
+        default: "https://linkedin.com",
+      },
     },
   },
   {

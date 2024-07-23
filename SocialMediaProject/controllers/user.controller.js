@@ -3,10 +3,21 @@ import User from "../models/User.model.js";
 
 export const Singup = async (req, res) => {
   try {
-    const { FullName, email, password, role, profileImage, designation } =
-      req.body;
+    const {
+      FullName,
+      email,
+      password,
+      role,
+      profileImage,
+      designation,
+      bio,
+      phoneNo,
+      facebook,
+      instagram,
+      linkdin,
+    } = req.body;
 
-    if (!FullName || !email || !password)
+    if (!FullName || !email || !password || !phoneNo)
       return res.status(400).json({ message: "Fileds are required" });
 
     const existUser = await User.findOne({ email });
@@ -21,6 +32,11 @@ export const Singup = async (req, res) => {
       role,
       profileImage,
       designation,
+      bio,
+      phoneNo,
+      facebook,
+      instagram,
+      linkdin,
     });
 
     await newUser.save();
@@ -76,4 +92,58 @@ export async function logout(req, res) {
   res.clearCookie("token").redirect("/");
 }
 
-export const EditProfile = async (req, res) => {};
+export const EditProfile = async (req, res) => {
+  const {
+    FullName,
+    email,
+    bio,
+    instagram,
+    facebook,
+    linkdin,
+    phoneNo,
+    designation,
+    role,
+  } = req.body;
+
+  // if (
+  //   !FullName ||
+  //   !email ||
+  //   !phoneNo ||
+  //   !profileImage ||
+  //   !bio ||
+  //   !linkdin ||
+  //   !instagram ||
+  //   !designation ||
+  //   !facebook
+  // )
+  //   return res.status(400).json({ message: "Fileds are required" });
+
+  const userId = req.params.id;
+
+  if (!userId) return res.status(400).json({ message: "User not found!" });
+
+  const profileImage = req.file
+    ? `/uploads/${req.file.filename}`
+    : req.user.profileImage;
+
+  const update = await User.findByIdAndUpdate(
+    userId,
+    {
+      profileImage,
+      FullName,
+      email,
+      bio,
+      instagram,
+      facebook,
+      linkdin,
+      phoneNo,
+      designation,
+      role,
+    },
+    { new: true }
+  );
+
+  req.user = update;
+
+  return res.redirect("/profile");
+};

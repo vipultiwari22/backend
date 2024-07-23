@@ -1,45 +1,61 @@
-<%- include('./partials/head') %> <%- include('./partials/nav') %> <% if
-(locals.user) { %>
-<div class="container mt-5 d-flex justify-content-center">
-  <div class="card p-3">
-    <div class="d-flex align-items-center">
-      <div class="image">
-        <img
-          src="<%= locals.user.profileImage %> "
-          class="rounded"
-          width="150"
-        />
-      </div>
-
-      <div class="ml-3 w-100">
-        <h4 class="mb-0 mt-0"><%= locals.user.FullName %></h4>
-        <span><%= locals.user.designation %></span>
-
-        <div
-          class="p-2 mt-2 bg-primary d-flex justify-content-between rounded text-white stats"
-        >
-          <div class="d-flex flex-column">
-            <span class="articles">Articles</span>
-            <span class="number1">38</span>
+<%- include('./partials/head') %> <%- include('./partials/nav') %>
+<div class="vh-100 bg-dark">
+  <% if (locals.user) { %>
+  <div class="container">
+    <div class="row d-flex justify-content-center">
+      <div class="col-md-7">
+        <div class="card p-3 py-4 mt-5">
+          <div class="text-center">
+            <img
+              src="<%= locals.user.profileImage %>"
+              width="100"
+              class="rounded-circle"
+            />
           </div>
 
-          <div class="d-flex flex-column">
-            <span class="followers">Followers</span>
-            <span class="number2">980</span>
-          </div>
+          <div class="text-center mt-3">
+            <h5 class="mt-2 mb-0"><%= locals.user.FullName %></h5>
+            <span><%= locals.user.designation %></span>
 
-          <div class="d-flex flex-column">
-            <span class="rating">Rating</span>
-            <span class="number3">8.9</span>
-          </div>
-        </div>
+            <div class="px-4 mt-1">
+              <p class="fonts"><%= locals.userData.bio %></p>
+            </div>
 
-        <div class="button mt-2 d-flex flex-row align-items-center">
-          <button class="btn btn-sm btn-outline-primary w-100">Chat</button>
-          <button class="btn btn-sm btn-primary w-100 ml-2">Follow</button>
+            <ul class="social-list">
+              <li>
+                <a href="<%=  locals.userData.socialLinks.facebook %>">
+                  <i class="fa fa-facebook"></i>
+                </a>
+              </li>
+              <li>
+                <a href="<%=  locals.userData.socialLinks.instagram %>">
+                  <i class="fa fa-instagram"></i>
+                </a>
+              </li>
+              <li>
+                <a href="<%=  locals.userData.socialLinks.linkedin %>">
+                  <i class="fa fa-linkedin"></i>
+                </a>
+              </li>
+            </ul>
+
+            <div class="buttons">
+              <button class="btn btn-outline-primary px-4">Message</button>
+              <button class="btn btn-primary px-4 ms-3">Contact</button>
+            </div>
+            <div class="mt-2">
+              <a href=" /edit-profile/" id="edit">
+                <i class="far fa-edit mb-5"></i>
+              </a>
+            </div>
+            <div class="Roles">
+              <label for="role">Role:</label>
+              <span class="profile-role"><%= locals.userData.role %></span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<% } %> <%- include('./partials/script') %>
+<% } %> <%- include('./partials/script') %> <%- include('./partials/style') %>

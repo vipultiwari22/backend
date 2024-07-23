@@ -117,7 +117,7 @@ Database: Use cloud-based databases like MongoDB Atlas for production.
 <h1>Example Folder Structure</h1>
 
 
-project-root/
+<pre>project-root/
 ├── config/
 │   └── db.js
 ├── controllers/
@@ -161,6 +161,7 @@ project-root/
 ├── app.js
 ├── package.json
 └── README.md
+</pre>
 
 
 <h1>Conclusion</h1>

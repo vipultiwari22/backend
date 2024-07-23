@@ -27,14 +27,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static(path.resolve("./public")));
 app.use("/uploads", express.static(path.join("./public", "uploads")));
-  
+
 // routes
 
 app.use("/api/v1/user", router);
 app.use("/", StaticRoute);
-
-app.get("/admin", authenticate, authorize("USER"), (req, res) => {
-  res.send("Welcome Admin");
-});
 
 app.listen(PORT, () => console.log(`Server is Running At PORT ${PORT}`));

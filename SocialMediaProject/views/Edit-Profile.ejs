@@ -1,0 +1,234 @@
+<%- include('./partials/head') %> <%- include('./partials/nav') %>
+<div class="vh-100 bg-dark">
+  <% if (locals.user) { %>
+  <div class="container">
+    <div class="row gutters">
+      <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+        <div class="card h-100 mt-5">
+          <div class="card-body">
+            <form
+              action="/api/v1/user/update-profile/<%= locals.user._id %>"
+              method="POST"
+              enctype="multipart/form-data"
+            >
+              <div class="row gutters">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                  <h6 class="mb-2 text-primary">Personal Details</h6>
+                  <div class="form-group text-center">
+                    <label for="profileImageInput">Profile Image</label>
+                    <div class="user-avatar text-center mt-3">
+                      <img
+                        id="profileImage"
+                        src="<%= locals.userData.profileImage %>"
+                        alt="<%= locals.userData.FullName %>"
+                        onclick="triggerFileInput()"
+                        style="
+                          cursor: pointer;
+                          width: 90px;
+                          height: 90px;
+                          border-radius: 50%;
+                          border: 1px solid black;
+                        "
+                      />
+                      <input
+                        type="file"
+                        id="profileImageInput"
+                        name="profileImage"
+                        style="display: none"
+                        onchange="previewImage(event)"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-3"
+                ></div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                  <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="fullName"
+                      name="fullName"
+                      placeholder="Enter full name"
+                      value="<%= locals.userData.FullName %>"
+                    />
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                  <div class="form-group">
+                    <label for="eMail">Email</label>
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="eMail"
+                      name="email"
+                      placeholder="Enter email ID"
+                      value="<%= locals.userData.email %>"
+                    />
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                  <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="phone"
+                      name="phoneNo"
+                      placeholder="Enter phone number"
+                      value="<%= locals.userData.phoneNo %>"
+                    />
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                  <div class="form-group">
+                    <label for="facebook">Facebook URL</label>
+                    <input
+                      type="url"
+                      class="form-control"
+                      id="facebook"
+                      name="facebook"
+                      placeholder="Facebook URL"
+                      value="<%= locals.userData.socialLinks.facebook %>"
+                    />
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                  <div class="form-group">
+                    <label for="instagram">Instagram URL</label>
+                    <input
+                      type="url"
+                      class="form-control"
+                      id="instagram"
+                      name="instagram"
+                      placeholder="Instagram URL"
+                      value="<%= locals.userData.socialLinks.instagram %>"
+                    />
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                  <div class="form-group">
+                    <label for="linkedin">LinkedIn URL</label>
+                    <input
+                      type="url"
+                      class="form-control"
+                      id="linkedin"
+                      name="linkedin"
+                      placeholder="LinkedIn URL"
+                      value="<%= locals.userData.socialLinks.linkedin %>"
+                    />
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                  <div class="form-group">
+                    <label for="linkedin">Designation </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="designation"
+                      placeholder="Enter your Designation"
+                      value="<%= locals.userData.designation %>"
+                    />
+                  </div>
+                </div>
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                  <div class="form-group">
+                    <label for="bio">Bio</label>
+                    <textarea
+                      class="form-control"
+                      id="bio"
+                      name="bio"
+                      placeholder="Write something about yourself"
+                      rows="4"
+                    >
+<%= locals.userData.bio %></textarea
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="row gutters mt-3">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                  <div class="text-center">
+                    <button
+                      type="button"
+                      id="cancel"
+                      name="cancel"
+                      class="btn btn-secondary"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      id="submit"
+                      name="submit"
+                      class="btn btn-primary"
+                    >
+                      Update
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+        <div class="card h-100 mt-5">
+          <div class="card-body">
+            <div class="account-settings">
+              <div class="user-profile">
+                <div class="user-avatar">
+                  <img
+                    id="profileImage"
+                    src="<%= locals.userData.profileImage %>"
+                    alt="<%= locals.userData.FullName %>"
+                    style="
+                      cursor: pointer;
+                      width: 90px;
+                      height: 90px;
+                      border-radius: 50%;
+                    "
+                  />
+                  <input
+                    type="file"
+                    id="profileImageInput"
+                    name="profileImage"
+                    style="display: none"
+                  />
+                </div>
+                <h5 class="user-name"><%= locals.userData.FullName %></h5>
+                <h6 class="user-email"><%= locals.userData.email %></h6>
+              </div>
+              <div class="about">
+                <h5>About</h5>
+                <p id="bios"><%= locals.userData.bio %></p>
+                <hr />
+                <h5>Role</h5>
+                <u class="simple-underline"><%= locals.userData.role %></u>
+                <hr />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% } %> <%- include('./partials/script') %> <%- include('./partials/style') %>
+
+<script>
+  function triggerFileInput() {
+    document.getElementById("profileImageInput").click();
+  }
+
+  function previewImage(event) {
+    const reader = new FileReader();
+    reader.onload = function () {
+      const output = document.getElementById("profileImage");
+      output.src = reader.result;
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  }
+</script>

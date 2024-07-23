@@ -24,6 +24,7 @@ export function createToken(user) {
     role: user.role,
     profileImage: user.profileImage,
     designation: user.designation,
+    phoneNo: user.phoneNo,
   };
   const toekn = JWT.sign(payload, process.env.mySecret);
   return toekn;

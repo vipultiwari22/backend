@@ -1,0 +1,172 @@
+<style>
+  /* Edit-Profile Page Css */
+
+  .account-settings .user-profile {
+    margin: 0 0 1rem 0;
+    padding-bottom: 1rem;
+    text-align: center;
+  }
+  .account-settings .user-profile .user-avatar {
+    margin: 0 0 1rem 0;
+  }
+  .account-settings .user-profile .user-avatar img {
+    width: 90px;
+    height: 90px;
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    border-radius: 100px;
+  }
+  .account-settings .user-profile h5.user-name {
+    margin: 0 0 0.5rem 0;
+  }
+  .account-settings .user-profile h6.user-email {
+    margin: 0;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: #9fa8b9;
+  }
+  .account-settings .about {
+    margin: 2rem 0 0 0;
+    text-align: center;
+  }
+  .account-settings .about h5 {
+    margin: 0 0 15px 0;
+    color: #007ae1;
+  }
+  .form-control {
+    border: 1px solid #cfd1d8;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    font-size: 0.825rem;
+    background: #ffffff;
+    color: #2e323c;
+  }
+
+  .card {
+    background: #ffffff;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 0;
+    margin-bottom: 1rem;
+  }
+  #bios {
+    text-align: justify;
+    font-size: small;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .simple-underline {
+    text-decoration: underline;
+    text-decoration-color: #007ae1; /* Color of the underline */
+    text-decoration-thickness: 2px; /* Thickness of the underline */
+    text-underline-offset: 3px; /* Distance between the text and the underline */
+  }
+
+  /* Profile Page Css */
+
+  .profile-role {
+    color: #08385f; /* Text color */
+    font-weight: bold; /* Make the text bold */
+    cursor: pointer; /* Pointer cursor to indicate interactivity */
+    transition: color 0.3s ease, background-color 0.3s ease; /* Smooth transitions */
+    border-radius: 4px; /* Slightly rounded corners */
+    padding: 2px 4px; /* Padding for better spacing */
+  }
+
+  .simple-underline {
+    text-decoration: underline;
+    text-decoration-color: #007ae1; /* Color of the underline */
+    text-decoration-thickness: 2px; /* Thickness of the underline */
+    text-underline-offset: 3px; /* Distance between the text and the underline */
+  }
+
+  body {
+    background: #eee;
+  }
+
+  .card {
+    border: none;
+
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .card:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background-color: #e1bee7;
+    transform: scaleY(1);
+    transition: all 0.5s;
+    transform-origin: bottom;
+  }
+
+  .card:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background-color: #8e24aa;
+    transform: scaleY(0);
+    transition: all 0.5s;
+    transform-origin: bottom;
+  }
+
+  .card:hover::after {
+    transform: scaleY(1);
+  }
+
+  .fonts {
+    font-size: 11px;
+  }
+
+  .social-list {
+    display: flex;
+    list-style: none;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .social-list li {
+    padding: 10px;
+    color: #8e24aa;
+    font-size: 19px;
+  }
+  #edit {
+    padding: 10px;
+    color: #8e24aa;
+    font-size: 19px;
+  }
+
+  .buttons button:nth-child(1) {
+    border: 1px solid #8e24aa !important;
+    color: #8e24aa;
+    height: 40px;
+  }
+
+  .buttons button:nth-child(1):hover {
+    border: 1px solid #8e24aa !important;
+    color: #fff;
+    height: 40px;
+    background-color: #8e24aa;
+  }
+
+  .buttons button:nth-child(2) {
+    border: 1px solid #8e24aa !important;
+    background-color: #8e24aa;
+    color: #fff;
+    height: 40px;
+  }
+  .Roles {
+    margin: 0px;
+    padding: 0px;
+  }
+</style>

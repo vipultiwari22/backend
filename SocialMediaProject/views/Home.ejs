@@ -16,6 +16,15 @@
           <img src="<%= locals.user.profileImage %>" alt="Profile Image" />
           <h5 class="mt-2"><%= locals.user.FullName %></h5>
           <p><%= locals.user.email %></p>
+          <p
+            style="
+              font-family: 'Times New Roman', Times, serif;
+              font-weight: bold;
+            "
+          >
+          <%= locals.user.bio %>
+            <!-- Directly accessing the bio field of the logged-in user -->
+          </p>
         </div>
         <% } %>
 
@@ -29,39 +38,47 @@
           <% } %>
 
           <!-- Display Posts -->
-          <% locals.AllPost.forEach(post => { %>
-          <div class="card post">
+          <% AllPost.forEach(post => { %>
+          <div class="card post mb-4">
             <div class="card-body">
-              <% if (locals.user) { %>
               <div class="d-flex">
                 <img
-                  src="<%= locals.user.profileImage %>"
+                  src="<%= post.createdBy.profileImage %>"
                   alt="User Image"
-                  class="me-3 col-md-3 profile-section text-center"
+                  class="me-3"
                   style="border-radius: 50%; height: 50px; width: 50px"
                 />
                 <div>
-                  <h5 class="card-title"><%= locals.user.FullName %></h5>
-                  <h6 class="card-subtitle mb-2 text-muted">
-                    <%= locals.user.email %>
-                  </h6>
+                  <h5 class="card-title"><%= post.createdBy.FullName %></h5>
                 </div>
               </div>
-              <% } %>
               <p class="card-text"><%= post.postBio %></p>
-              <img src="<%= post.postImage %>" alt="Post Image" />
+              <img
+                src="<%= post.postImage %>"
+                alt="Post Image"
+                class="img-fluid"
+              />
               <div class="mt-2">
                 <button class="btn btn-outline-primary btn-sm">Like</button>
                 <button class="btn btn-outline-secondary btn-sm">
                   Comment
                 </button>
                 <button class="btn btn-outline-success btn-sm">Share</button>
+                <% if (locals.user && locals.user._id.toString() ===
+                post.createdBy._id.toString()) { %>
+                <button class="btn btn-outline-primary btn-sm">
+                  <a id="edit" href="/editPost/<%= post._id %>">Edit Post</a>
+                </button>
+                <button class="btn btn-outline-danger btn-sm">
+                  <a id="delete" href="/post/delete-post/<%= post._id %>"
+                    >Delete Post</a
+                  >
+                </button>
+                <% } %>
               </div>
             </div>
           </div>
           <% }) %>
-
-          <!-- Add more posts as needed -->
         </div>
 
         <!-- Sidebar -->
@@ -76,13 +93,29 @@
               </ul>
             </div>
           </div>
-          <div class="card">
+          <div class="card mb-4">
             <div class="card-body">
               <h5 class="card-title">Suggested Friends</h5>
               <ul class="list-group list-group-flush">
-                <li class="list-group-item">Friend 1</li>
-                <li class="list-group-item">Friend 2</li>
-                <li class="list-group-item">Friend 3</li>
+                <% AllUsers.forEach(user => { %>
+                <li class="list-group-item">
+                  <div class="d-flex align-items-center">
+                    <img
+                      src="<%= user.profileImage %>"
+                      alt="Friend Image"
+                      class="me-3"
+                      style="border-radius: 50%; height: 40px; width: 40px"
+                    />
+                    <span>
+                      <button class="btn btn-primary btn-sm">
+                        <a id="profileviews" href="/profile/<%= user._id %>"
+                          >View profile</a
+                        >
+                      </button>
+                    </span>
+                  </div>
+                </li>
+                <% }) %>
               </ul>
             </div>
           </div>
@@ -95,6 +128,12 @@
 </html>
 
 <style>
+  #profileviews {
+    color: white;
+    list-style: none;
+    text-decoration: none;
+    font-family: sans-serif;
+  }
   .homePage {
     display: flex;
     justify-content: space-evenly;
@@ -109,5 +148,20 @@
   }
   .post {
     margin-bottom: 20px;
+  }
+  #edit {
+    text-decoration: none;
+    list-style: none;
+  }
+  #delete {
+    text-decoration: none;
+    list-style: none;
+    color: red;
+  }
+  #edit:hover,
+  #delete:hover {
+    text-decoration: none;
+    list-style: none;
+    color: white;
   }
 </style>

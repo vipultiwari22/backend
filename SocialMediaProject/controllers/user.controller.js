@@ -94,16 +94,25 @@ export async function logout(req, res) {
 
 export const EditProfile = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { fullName, email, phoneNo, facebook, instagram, linkedin, bio } =
-      req.body;
+    const userId = req.params.id;
+    const {
+      FullName,
+      email,
+      phoneNo,
+      facebook,
+      instagram,
+      linkedin,
+      bio,
+      designation,
+      role,
+    } = req.body;
 
     const profileImage = req.file ? req.file.path : req.user.profileImage;
 
     const updatedUser = await User.findByIdAndUpdate(
-      id,
+      userId,
       {
-        fullName,
+        FullName,
         email,
         phoneNo,
         socialLinks: {
@@ -113,13 +122,15 @@ export const EditProfile = async (req, res) => {
         },
         bio,
         profileImage,
+        designation,
+        role,
       },
       { new: true }
     );
 
     req.user = updatedUser;
 
-    return res.redirect("/Profile");
+    return res.redirect(`/Profile/${userId}`);
   } catch (error) {
     res.status(500).send(error.message);
   }

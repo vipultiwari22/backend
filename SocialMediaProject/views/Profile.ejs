@@ -1,61 +1,76 @@
 <%- include('./partials/head') %> <%- include('./partials/nav') %>
+
 <div class="vh-100 bg-dark">
-  <% if (locals.user) { %>
+  <% if (locals.userData) { %>
   <div class="container">
     <div class="row d-flex justify-content-center">
       <div class="col-md-7">
         <div class="card p-3 py-4 mt-5">
           <div class="text-center">
             <img
-              src="<%= locals.user.profileImage %>"
+              src="<%= locals.userData.profileImage %>"
               width="100"
               class="rounded-circle"
+              alt="<%= locals.userData.FullName %>'s profile image"
             />
           </div>
 
           <div class="text-center mt-3">
-            <h5 class="mt-2 mb-0"><%= locals.user.FullName %></h5>
-            <span><%= locals.user.designation %></span>
+            <h5 class="mt-2 mb-0"><%= locals.userData.FullName %></h5>
+            <span><%= locals.userData.designation %></span>
 
             <div class="px-4 mt-1">
               <p class="fonts"><%= locals.userData.bio %></p>
             </div>
 
             <ul class="social-list">
+              <% if (locals.userData.socialLinks.facebook) { %>
               <li>
-                <a href="<%=  locals.userData.socialLinks.facebook %>">
+                <a href="<%= locals.userData.socialLinks.facebook %>">
                   <i class="fa fa-facebook"></i>
                 </a>
               </li>
+              <% } %> <% if (locals.userData.socialLinks.instagram) { %>
               <li>
-                <a href="<%=  locals.userData.socialLinks.instagram %>">
+                <a href="<%= locals.userData.socialLinks.instagram %>">
                   <i class="fa fa-instagram"></i>
                 </a>
               </li>
+              <% } %> <% if (locals.userData.socialLinks.linkedin) { %>
               <li>
-                <a href="<%=  locals.userData.socialLinks.linkedin %>">
+                <a href="<%= locals.userData.socialLinks.linkedin %>">
                   <i class="fa fa-linkedin"></i>
                 </a>
               </li>
+              <% } %>
             </ul>
 
+            <% if (locals.user._id.toString() ===
+            locals.userData._id.toString()) { %>
+            <div class="buttons">
+              <a
+                href="/edit-profile/<%= locals.userData._id %>"
+                class="btn btn-primary px-4 ms-3"
+                >Edit Profile</a
+              >
+            </div>
+            <% } else { %>
             <div class="buttons">
               <button class="btn btn-outline-primary px-4">Message</button>
               <button class="btn btn-primary px-4 ms-3">Contact</button>
             </div>
-            <div class="mt-2">
-              <a href=" /edit-profile/" id="edit">
-                <i class="far fa-edit mb-5"></i>
-              </a>
-            </div>
-            <div class="Roles">
+            <% } %>
+
+            <div class="Roles mt-3">
               <label for="role">Role:</label>
-              <span class="profile-role"><%= locals.userData.role %></span>
+              <span class="profile-role"><%= locals.user.role %></span>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <% } %>
 </div>
-<% } %> <%- include('./partials/script') %> <%- include('./partials/style') %>
+
+<%- include('./partials/script') %> <%- include('./partials/style') %>

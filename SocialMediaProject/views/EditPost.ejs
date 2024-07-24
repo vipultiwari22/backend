@@ -1,0 +1,105 @@
+<%- include('./partials/head') %> <%- include('./partials/nav') %>
+<style>
+  #mediaPreview img,
+  #mediaPreview video {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+  }
+  .btn-secondary {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-secondary i {
+    font-size: 1.2em;
+    vertical-align: middle;
+  }
+  .form-control {
+    border-radius: 8px;
+  }
+</style>
+<% if (locals.user) { %>
+<div class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h4 class="card-title mb-4">Edit Post</h4>
+      <form
+        action="/post/update-post/<%= post._id %>"
+        method="post"
+        enctype="multipart/form-data"
+        id="postForm"
+      >
+        <!-- Post ID (hidden) -->
+        <input type="hidden" name="_id" value="<%= post._id %>" />
+
+        <!-- Post Bio -->
+        <div class="mb-3">
+          <textarea
+            class="form-control"
+            rows="3"
+            placeholder="What's on your mind?"
+            name="postBio"
+            required
+          >
+<%= locals.post.postBio %></textarea
+          >
+        </div>
+        <div class="mb-3">
+          <input
+            type="file"
+            id="mediaUpload"
+            name="postImage"
+            accept="image/*,video/*"
+            style="display: none"
+          />
+          <label for="mediaUpload" class="btn btn-secondary">
+            <i class="bi bi-plus"></i> Add Media
+          </label>
+          <div id="mediaPreview" class="mt-2">
+            <% if (post.postImage) { %> <% if (post.postImage.endsWith('.mp4')
+            || post.postImage.endsWith('.avi')) { %>
+            <video controls class="img-fluid">
+              <source src="<%= post.postImage %>" type="video/mp4" />
+            </video>
+            <% } else { %>
+            <img
+              src="<%= post.postImage %>"
+              alt="Post Image"
+              class="img-fluid"
+            />
+            <% } %> <% } %>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Post</button>
+      </form>
+    </div>
+  </div>
+</div>
+<% } %>
+
+<script>
+  document
+    .getElementById("mediaUpload")
+    .addEventListener("change", function (event) {
+      const file = event.target.files[0];
+      const mediaPreview = document.getElementById("mediaPreview");
+      mediaPreview.innerHTML = ""; // Clear previous previews
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          if (file.type.startsWith("image/")) {
+            mediaPreview.innerHTML = `<img src="${e.target.result}" alt="Selected image" />`;
+          } else if (file.type.startsWith("video/")) {
+            mediaPreview.innerHTML = `<video controls><source src="${e.target.result}" type="${file.type}" /></video>`;
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+</script>
+
+<%- include('./partials/script') %>

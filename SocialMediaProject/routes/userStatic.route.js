@@ -6,22 +6,32 @@ import PostArtical from "../models/Post.model.js";
 const StaticRoute = express.Router();
 
 StaticRoute.get("/", async (req, res) => {
-  const AllPost = await PostArtical.find({})
-    .populate({
-      path: "createdBy",
-      select: "FullName profileImage email", // Specify fields you want from the User
-    })
-    .select("postBio postImage") // Specify fields you want from the PostArtical
-    .exec();
+  try {
+    const AllUsers = await User.find(); // Fetch all users (if needed for suggestions or other parts of the page)
 
-  if (!AllPost || AllPost.length === 0) {
-    return res.status(400).json({ message: "Post is Not Available!" });
+    if (!AllUsers) return res.status(400).json({ message: "User Not Found!" });
+
+    const AllPost = await PostArtical.find({})
+      .populate({
+        path: "createdBy",
+        select: "FullName profileImage email bio", // Ensure 'bio' is included here
+      })
+      .select("postBio postImage") // Specify fields you want from the PostArtical
+      .exec();
+
+    if (!AllPost || AllPost.length === 0) {
+      return res.status(400).json({ message: "Post is Not Available!" });
+    }
+
+    res.render("Home", {
+      user: req.user, // req.user should already contain the bio if it’s populated correctly
+      AllUsers,
+      AllPost,
+    });
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    res.status(500).json({ message: "Server Error" });
   }
-
-  res.render("Home", {
-    user: req.user,
-    AllPost,
-  });
 });
 
 StaticRoute.get("/Singup", (req, res) => {
@@ -36,23 +46,41 @@ StaticRoute.get("/login", (req, res) => {
   });
 });
 
-StaticRoute.get("/Profile", authenticate, async (req, res) => {
-  const email = req.user.email;
+StaticRoute.get("/profile/:id", authenticate, async (req, res) => {
+  try {
+    const userId = req.params.id;
 
-  const userData = await User.findOne({ email });
+    const userData = await User.findById(userId).select(
+      "FullName profileImage bio email designation socialLinks"
+    );
 
-  if (!userData) return res.status(400).json({ message: "User not found" });
+    if (!userData) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
-  res.render("Profile", {
-    user: req.user,
-    userData,
-  });
+    res.render("Profile", {
+      user: req.user, // The logged-in user
+      userData, // The profile data of the user being viewed
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
 });
 
-StaticRoute.get("/edit-profile", authenticate, async (req, res) => {
-  const email = req.user.email;
+StaticRoute.get("/edit-profile/:id", authenticate, async (req, res) => {
+  const loggedInUserId = req.user._id; // The logged-in user's ID from the middleware
+  const profileUserId = req.params.id;
 
-  const userData = await User.findOne({ email });
+  // Check if the logged-in user is the same as the profile user
+
+  if (loggedInUserId.toString() !== profileUserId) {
+    return res
+      .status(403)
+      .send("Access denied. You can only edit your own profile.");
+  }
+
+  const userData = await User.findById(profileUserId);
 
   if (!userData) return res.status(400).json({ message: "User not found" });
 

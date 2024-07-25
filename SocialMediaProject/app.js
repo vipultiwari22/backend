@@ -13,6 +13,8 @@ import {
 } from "./middleware/Auth.middlware.js";
 import POSTRoute from "./routes/post.routes.js";
 import PostStaticRoute from "./routes/postStatic.routes.js";
+import followRoutes from "./routes/follow.routes.js";
+import commentRoute from "./routes/comment.route.js";
 dotenv.config();
 
 connectToDataBase();
@@ -43,5 +45,7 @@ app.use("/api/v1/user", router);
 app.use("/", StaticRoute);
 app.use("/post", authenticate, POSTRoute);
 app.use("/", authenticate, PostStaticRoute);
+app.use("/follow", authenticate, followRoutes);
+app.use("/comment", authenticate, commentRoute);
 
 app.listen(PORT, () => console.log(`Server is Running At PORT ${PORT}`));

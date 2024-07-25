@@ -1,18 +1,22 @@
 import mongoose, { Schema } from "mongoose";
 
-const PostArticleSchema = new mongoose.Schema({
-  postBio: {
-    type: String,
-    required: true,
+const PostArticleSchema = new mongoose.Schema(
+  {
+    postBio: {
+      type: String,
+    },
+    postImage: {
+      type: String,
+    },
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
-  postImage: {
-    type: String,
-  },
-  createdBy: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
 const PostArtical = mongoose.model("post", PostArticleSchema);
 

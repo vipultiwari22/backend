@@ -45,21 +45,28 @@
               <% } %>
             </ul>
 
-            <% if (locals.user._id.toString() ===
-            locals.userData._id.toString()) { %>
             <div class="buttons">
+              <% if (locals.user._id.toString() ===
+              locals.userData._id.toString()) { %>
               <a
                 href="/edit-profile/<%= locals.userData._id %>"
                 class="btn btn-primary px-4 ms-3"
-                >Edit Profile</a
               >
-            </div>
-            <% } else { %>
-            <div class="buttons">
-              <button class="btn btn-outline-primary px-4">Message</button>
+                Edit Profile
+              </a>
+              <% } else { %>
+              <form
+                action="/follow/<%= locals.userData._id %>"
+                method="POST"
+                style="display: inline"
+              >
+                <button type="submit" class="btn btn-outline-primary px-4">
+                  <%= isFollowing ? 'Unfollow' : 'Follow' %>
+                </button>
+              </form>
               <button class="btn btn-primary px-4 ms-3">Contact</button>
+              <% } %>
             </div>
-            <% } %>
 
             <div class="Roles mt-3">
               <label for="role">Role:</label>
@@ -72,5 +79,13 @@
   </div>
   <% } %>
 </div>
+<style>
+  #FollowBtn {
+    color: black;
+  }
+  #FollowBtn:hover {
+    color: white;
+  }
+</style>
 
 <%- include('./partials/script') %> <%- include('./partials/style') %>

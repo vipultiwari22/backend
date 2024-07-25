@@ -8,7 +8,7 @@
   </head>
   <body>
     <%- include('./partials/nav') %>
-    <div class="container-fluid mt-4">
+    <div class="container-fluid">
       <div class="row homePage">
         <!-- Profile Section for Logged-in Users -->
         <% if (locals.user) { %>
@@ -22,7 +22,7 @@
               font-weight: bold;
             "
           >
-          <%= locals.user.bio %>
+            <%= locals.user.bio %>
             <!-- Directly accessing the bio field of the logged-in user -->
           </p>
         </div>
@@ -50,6 +50,7 @@
                 />
                 <div>
                   <h5 class="card-title"><%= post.createdBy.FullName %></h5>
+                  <h5 class="card-title"><%= post.createdAt %></h5>
                 </div>
               </div>
               <p class="card-text"><%= post.postBio %></p>
@@ -59,11 +60,33 @@
                 class="img-fluid"
               />
               <div class="mt-2">
-                <button class="btn btn-outline-primary btn-sm">Like</button>
-                <button class="btn btn-outline-secondary btn-sm">
-                  Comment
-                </button>
-                <button class="btn btn-outline-success btn-sm">Share</button>
+                <% if (locals.user) { %>
+                <a
+                  href="#"
+                  class="btn btn-outline-primary btn-sm"
+                  style="list-style: none; text-decoration: none"
+                  >Like</a
+                >
+                <a
+                  href="/view-post/<%= post._id %>"
+                  class="btn btn-outline-secondary btn-sm"
+                  style="list-style: none; text-decoration: none"
+                  >Comment</a
+                >
+                <a
+                  href="#"
+                  style="list-style: none; text-decoration: none"
+                  class="btn btn-outline-success btn-sm"
+                  >Share</a
+                >
+                <% } %>
+                <a
+                  href="/view-post/<%= post._id %>"
+                  class="btn btn-outline-primary btn-sm"
+                  style="list-style: none; text-decoration: none"
+                  >View</a
+                >
+
                 <% if (locals.user && locals.user._id.toString() ===
                 post.createdBy._id.toString()) { %>
                 <button class="btn btn-outline-primary btn-sm">
@@ -163,5 +186,14 @@
     text-decoration: none;
     list-style: none;
     color: white;
+  }
+  @media (max-width: 576px) {
+    .post .card-body img {
+      height: auto;
+      width: 100%;
+    }
+    .d-flex {
+      flex-direction: column;
+    }
   }
 </style>

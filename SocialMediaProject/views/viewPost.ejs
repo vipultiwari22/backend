@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= post.createdBy.FullName %>'s Post</title>
+    <%- include('./partials/head') %>
+    <style>
+      .card-img-top {
+        object-fit: cover;
+        height: 200px;
+      }
+      .comment-section {
+        max-height: 200px;
+        overflow-y: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <%- include('./partials/nav') %>
+
+    <div class="container mt-4">
+      <div class="card post mb-4">
+        <div class="card-body">
+          <div class="d-flex align-items-center mb-3">
+            <img
+              src="<%= post.createdBy.profileImage %>"
+              alt="User Image"
+              class="rounded-circle me-3"
+              style="height: 50px; width: 50px"
+            />
+            <div>
+              <h5 class="card-title mb-0"><%= post.createdBy.FullName %></h5>
+              <small class="text-muted"><%= post.createdBy.email %></small>
+            </div>
+          </div>
+          <p class="card-text"><%= post.postBio %></p>
+          <img
+            src="<%= post.postImage %>"
+            alt="Post Image"
+            class="card-img-top"
+            style="height: 50%; width: 50%"
+          />
+          <div class="d-flex gap-2 mt-2">
+            <a href="#" class="btn btn-outline-primary btn-sm">Like</a>
+            <a href="#" class="btn btn-outline-secondary btn-sm">Comment</a>
+            <a href="#" class="btn btn-outline-success btn-sm">Share</a>
+            <% if (locals.user && locals.user._id.toString() ===
+            post.createdBy._id.toString()) { %>
+            <a
+              href="/editPost/<%= post._id %>"
+              class="btn btn-outline-primary btn-sm ml-auto"
+              >Edit Post</a
+            >
+            <a
+              href="/post/delete-post/<%= post._id %>"
+              class="btn btn-outline-danger btn-sm ml-2"
+              >Delete Post</a
+            >
+            <% } %>
+          </div>
+        </div>
+        <div class="card-footer">
+          <h6>Comments</h6>
+          <div class="comment-section mb-3">
+            <% comments.forEach(comment => { %>
+            <div class="card mb-2">
+              <div class="card-body p-2">
+                <div class="media mb-2">
+                  <img
+                    src="<%= comment.createdby.profileImage %>"
+                    alt="User Image"
+                    class="mr-3 rounded-circle"
+                    style="height: 40px; width: 40px"
+                  />
+                  <div class="media-body">
+                    <h6 class="mt-0 mb-1"><%= comment.createdby.FullName %></h6>
+                    <p class="mb-0"><%= comment.content %></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% }) %>
+          </div>
+          <% if (locals.user) { %>
+          <form method="POST" action="/comment/<%= post._id %>">
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Write a comment..."
+                name="content"
+                required
+              />
+              <div class="input-group-append">
+                <button class="btn btn-outline-primary" type="submit">
+                  Submit
+                </button>
+              </div>
+            </div>
+          </form>
+          <% } %>
+        </div>
+      </div>
+    </div>
+
+    <%- include('./partials/script') %>
+  </body>
+</html>

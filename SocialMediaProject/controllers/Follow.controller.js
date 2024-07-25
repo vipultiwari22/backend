@@ -1,29 +1,32 @@
-import Follow from "../models/Follow.model";
+import Follow from "../models/Follow.model.js";
 
+// Controller to handle follow/unfollow toggle
 export const toggleFollowUser = async (req, res) => {
-  const userId = req.user._id; // Assuming the authenticated user's ID is in req.user
-  const targetUserId = req.params.id; // The user to follow/unfollow
+  const userId = req.user._id; // Authenticated user's ID
+  const targetUserId = req.params.id; // The ID of the user to follow/unfollow
 
   try {
     // Check if the follow relationship already exists
     const existingFollow = await Follow.findOne({
-      followedBy: userId,
+      FollwedBy: userId,
       following: targetUserId,
     });
 
     if (existingFollow) {
-      // Unfollow the user if the relationship exists
+      // If relationship exists, unfollow
       await Follow.deleteOne({ _id: existingFollow._id });
-      return res.status(200).json({ message: "User unfollowed successfully." });
+
+      return res.redirect(`/Profile/${targetUserId}`);
     } else {
-      // Follow the user if the relationship does not exist
+      // If no relationship, follow
       const newFollow = new Follow({
-        followedBy: userId,
+        FollwedBy: userId,
         following: targetUserId,
       });
 
       await newFollow.save();
-      return res.status(200).json({ message: "User followed successfully." });
+
+      return res.redirect(`/Profile/${targetUserId}`);
     }
   } catch (error) {
     console.error("Error toggling follow/unfollow:", error);
@@ -31,4 +34,8 @@ export const toggleFollowUser = async (req, res) => {
       .status(500)
       .json({ message: "Server error. Please try again later." });
   }
+};
+
+export const toggleLikeUser = async (req, res) => {
+  // const user =
 };

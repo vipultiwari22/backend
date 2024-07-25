@@ -2,6 +2,7 @@ import express from "express";
 import { authenticate } from "../middleware/Auth.middlware.js";
 import User from "../models/User.model.js";
 import PostArtical from "../models/Post.model.js";
+import Follow from "../models/Follow.model.js";
 
 const StaticRoute = express.Router();
 
@@ -58,9 +59,16 @@ StaticRoute.get("/profile/:id", authenticate, async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    // Assuming you want to check if the logged-in user follows this user
+    const isFollowing = await Follow.findOne({
+      FollwedBy: req.user._id,
+      following: userId,
+    }).populate("FollwedBy following");
+
     res.render("Profile", {
       user: req.user, // The logged-in user
       userData, // The profile data of the user being viewed
+      isFollowing: Boolean(isFollowing), // Whether the logged-in user follows this user
     });
   } catch (error) {
     console.error(error);

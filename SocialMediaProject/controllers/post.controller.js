@@ -3,7 +3,7 @@ import PostArtical from "../models/Post.model.js";
 export const CreatePost = async (req, res) => {
   const { postBio } = req.body;
 
-  if (!postBio) return res.status(400).json({ message: "fields are require" });
+  // if (!postBio) return res.status(400).json({ message: "fields are require" });
 
   try {
     const postImage = req.file ? req.file.path : req.user.postImage;
@@ -69,5 +69,3 @@ export const DeletePost = async (req, res) => {
     return res.status(500).json({ message: "Server Error" });
   }
 };
-
-export const viewFollowersAndFollowPost = async (req, res) => {};

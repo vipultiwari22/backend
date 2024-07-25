@@ -40,7 +40,7 @@ export const authenticate = (req, res, next) => {
   const token = req.cookies ? req.cookies.token : null;
 
   if (!token) {
-    return res.status(400).json({ message: "No token,Please Login" });
+    return res.redirect("/login");
   }
 
   try {

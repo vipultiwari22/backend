@@ -61,43 +61,44 @@
               />
               <div class="mt-2">
                 <% if (locals.user) { %>
-                <a
-                  href="#"
-                  class="btn btn-outline-primary btn-sm"
-                  style="list-style: none; text-decoration: none"
-                  >Like</a
+                <form
+                  id="likeForm"
+                  action="/follow/like/<%= post._id %>"
+                  method="POST"
                 >
-                <a
-                  href="/view-post/<%= post._id %>"
-                  class="btn btn-outline-secondary btn-sm"
-                  style="list-style: none; text-decoration: none"
-                  >Comment</a
-                >
-                <a
-                  href="#"
-                  style="list-style: none; text-decoration: none"
-                  class="btn btn-outline-success btn-sm"
-                  >Share</a
-                >
-                <% } %>
-                <a
-                  href="/view-post/<%= post._id %>"
-                  class="btn btn-outline-primary btn-sm"
-                  style="list-style: none; text-decoration: none"
-                  >View</a
-                >
-
-                <% if (locals.user && locals.user._id.toString() ===
-                post.createdBy._id.toString()) { %>
-                <button class="btn btn-outline-primary btn-sm">
-                  <a id="edit" href="/editPost/<%= post._id %>">Edit Post</a>
-                </button>
-                <button class="btn btn-outline-danger btn-sm">
-                  <a id="delete" href="/post/delete-post/<%= post._id %>"
-                    >Delete Post</a
+                  <button
+                    type="submit"
+                    id="likeButton"
+                    class="btn <%= post.isLiked ? 'btn-danger' : 'btn-outline-primary' %> btn-sm"
                   >
-                </button>
-                <% } %>
+                    <%= post.isLiked ? 'Unlike' : 'Like' %>
+                  </button>
+                  <a
+                    href="/view-post/<%= post._id %>"
+                    class="btn btn-outline-secondary btn-sm"
+                    style="list-style: none; text-decoration: none"
+                    >Comment</a
+                  >
+                  <% } %>
+                  <a
+                    href="/view-post/<%= post._id %>"
+                    class="btn btn-outline-primary btn-sm"
+                    style="list-style: none; text-decoration: none"
+                    >View</a
+                  >
+
+                  <% if (locals.user && locals.user._id.toString() ===
+                  post.createdBy._id.toString()) { %>
+                  <button class="btn btn-outline-primary btn-sm">
+                    <a id="edit" href="/editPost/<%= post._id %>">Edit Post</a>
+                  </button>
+                  <button class="btn btn-outline-danger btn-sm">
+                    <a id="delete" href="/post/delete-post/<%= post._id %>"
+                      >Delete Post</a
+                    >
+                  </button>
+                  <% } %>
+                </form>
               </div>
             </div>
           </div>
@@ -116,6 +117,7 @@
               </ul>
             </div>
           </div>
+          <% if (locals.user) { %>
           <div class="card mb-4">
             <div class="card-body">
               <h5 class="card-title">Suggested Friends</h5>
@@ -142,6 +144,7 @@
               </ul>
             </div>
           </div>
+          <% } %>
         </div>
       </div>
     </div>
@@ -197,3 +200,20 @@
     }
   }
 </style>
+//
+<script>
+  //   document
+  //     .getElementById("likeForm")
+  //     .addEventListener("submit", function (event) {
+  //       event.preventDefault(); // Prevent form submission to allow button toggle
+  //       const likeButton = document.getElementById("likeButton");
+  //       const isLiked = likeButton.classList.contains("btn-danger");
+
+  //       likeButton.classList.toggle("btn-outline-primary", isLiked);
+  //       likeButton.classList.toggle("btn-danger", !isLiked);
+  //       likeButton.textContent = isLiked ? "Like" : "Unlike";
+
+  //       this.submit(); // Now submit the form
+  //     });
+  //
+</script>

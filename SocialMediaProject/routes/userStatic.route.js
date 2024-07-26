@@ -3,31 +3,53 @@ import { authenticate } from "../middleware/Auth.middlware.js";
 import User from "../models/User.model.js";
 import PostArtical from "../models/Post.model.js";
 import Follow from "../models/Follow.model.js";
+import likeUnlike from "../models/LikeUnlike.model.js";
 
 const StaticRoute = express.Router();
 
 StaticRoute.get("/", async (req, res) => {
   try {
-    const AllUsers = await User.find(); // Fetch all users (if needed for suggestions or other parts of the page)
+    // Fetch all users (if needed for suggestions or other parts of the page)
+    const AllUsers = await User.find();
 
-    if (!AllUsers) return res.status(400).json({ message: "User Not Found!" });
+    if (!AllUsers) {
+      return res.status(400).json({ message: "User Not Found!" });
+    }
 
+    // Fetch all posts and their creators
     const AllPost = await PostArtical.find({})
       .populate({
         path: "createdBy",
         select: "FullName profileImage email bio", // Ensure 'bio' is included here
       })
-      .select("postBio postImage") // Specify fields you want from the PostArtical
+      .select("postBio postImage createdBy") // Specify fields you want from the PostArtical
       .exec();
 
     if (!AllPost || AllPost.length === 0) {
       return res.status(400).json({ message: "Post is Not Available!" });
     }
 
+    // Determine if the current user has liked each post
+    const postWithLikes = await Promise.all(
+      AllPost.map(async (post) => {
+        const isLiked = req.user
+          ? await likeUnlike.exists({
+              LikedBy: req.user._id,
+              LikeOnPost: post._id,
+            })
+          : false;
+
+        return {
+          ...post._doc, // spread the post document
+          isLiked, // add isLiked property
+        };
+      })
+    );
+
     res.render("Home", {
       user: req.user, // req.user should already contain the bio if it’s populated correctly
       AllUsers,
-      AllPost,
+      AllPost: postWithLikes, // Pass the modified posts array
     });
   } catch (error) {
     console.error("Error fetching data:", error);

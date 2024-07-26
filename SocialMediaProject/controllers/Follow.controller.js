@@ -36,6 +36,4 @@ export const toggleFollowUser = async (req, res) => {
   }
 };
 
-export const toggleLikeUser = async (req, res) => {
-  // const user =
-};
+

@@ -32,33 +32,26 @@ PostStaticRoute.get("/editpost/:id", authenticate, async (req, res) => {
 });
 
 PostStaticRoute.get("/view-post/:id", authenticate, async (req, res) => {
-  const { id } = req.params; // Extract postId from request parameters
   try {
     // Fetch the specific post by ID
-    const post = await PostArtical.findById(id)
-      .populate({
-        path: "createdBy",
-        select: "FullName profileImage email bio",
-      })
-      .exec();
-
-    // Fetch comments related to this post
-    const comments = await Comments.find({ postId: id })
-      .populate({
-        path: "createdby",
-        select: "FullName profileImage",
-      })
-      .exec();
+    const postId = req.params.id;
+    const post = await PostArtical.findById(postId).populate(
+      "createdBy",
+      "FullName profileImage email"
+    );
+    const comments = await Comments.find({ LikeOnPost: postId }).populate(
+      "createdby",
+      "FullName profileImage"
+    );
 
     if (!post) {
-      return res.status(404).json({ message: "Post not found!" });
+      return res.status(404).json({ message: "Post not found" });
     }
-    console.log(post);
 
-    return res.render("viewPost", {
+    res.render("viewPost", {
       user: req.user,
-      post, // Pass the specific post
-      comments, // Pass the comments related to this post
+      post,
+      comments,
     });
   } catch (error) {
     console.error(error);

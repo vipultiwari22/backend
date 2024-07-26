@@ -38,7 +38,7 @@ Key Features
 <h1>Search and Explore:</h1>
 
 <h3>Search Users:</h3> Users can search for other users by name or username.
-<h3>Explore Posts:</h3> Users can explore popular or trending posts.
+<h3>Explore Posts:</h3> Users can explore popular or trending Aposts.
 
 <h1>Admin Dashboard:</h1>
 

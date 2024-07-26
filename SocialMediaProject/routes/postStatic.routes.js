@@ -2,6 +2,7 @@ import express from "express";
 import { authenticate } from "../middleware/Auth.middlware.js";
 import PostArtical from "../models/Post.model.js";
 import Comments from "../models/comment.model.js";
+import mongoose from "mongoose";
 
 const PostStaticRoute = express.Router();
 
@@ -33,13 +34,21 @@ PostStaticRoute.get("/editpost/:id", authenticate, async (req, res) => {
 
 PostStaticRoute.get("/view-post/:id", authenticate, async (req, res) => {
   try {
-    // Fetch the specific post by ID
     const postId = req.params.id;
+
+    // Ensure postId is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(postId)) {
+      return res.status(400).json({ message: "Invalid Post ID" });
+    }
+
+    // Fetch the specific post by ID
     const post = await PostArtical.findById(postId).populate(
       "createdBy",
       "FullName profileImage email"
     );
-    const comments = await Comments.find({ LikeOnPost: postId }).populate(
+
+    // Fetch comments related to the specific post
+    const comments = await Comments.find({ postId }).populate(
       "createdby",
       "FullName profileImage"
     );

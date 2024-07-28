@@ -15,6 +15,7 @@ import POSTRoute from "./routes/post.routes.js";
 import PostStaticRoute from "./routes/postStatic.routes.js";
 import followRoutes from "./routes/follow.routes.js";
 import commentRoute from "./routes/comment.route.js";
+import status from "express-status-monitor";
 dotenv.config();
 
 connectToDataBase();
@@ -31,6 +32,8 @@ const PORT = process.env.PORT;
 //ejs for frontend
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
+
+app.use(status());
 
 app.use(cookieParser());
 app.use(checkCookieForSettingUserGlobally("token"));

@@ -1,4 +1,5 @@
 import Follow from "../models/Follow.model.js";
+import Notification from "../models/Notification.model.js";
 
 // Controller to handle follow/unfollow toggle
 export const toggleFollowUser = async (req, res) => {
@@ -26,6 +27,12 @@ export const toggleFollowUser = async (req, res) => {
 
       await newFollow.save();
 
+      await Notification.create({
+        user: userId,
+        type: "follow",
+        targetUser: targetUserId,
+      });
+
       return res.redirect(`/Profile/${targetUserId}`);
     }
   } catch (error) {
@@ -35,5 +42,3 @@ export const toggleFollowUser = async (req, res) => {
       .json({ message: "Server error. Please try again later." });
   }
 };
-
-

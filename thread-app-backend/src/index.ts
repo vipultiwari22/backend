@@ -1,6 +1,7 @@
 import express from "express";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
+import { PrismaClients } from "./lib/db";
 
 async function init() {
   const app = express();
@@ -15,11 +16,41 @@ async function init() {
     hello:String
     say(name:String):String
     }
+    type Mutation {
+      createUser(firstName:String!, lastName:String!, email:String!, password:String! ):Boolean
+    }
     `, // Schema
     resolvers: {
       Query: {
         hello: () => `Hey there , I am a graphQl server`,
         say: (_, { name }: { name: String }) => `Hey ${name}, How are you`,
+      },
+      Mutation: {
+        createUser: async (
+          _,
+          {
+            firstName,
+            lastName,
+            email,
+            password,
+          }: {
+            firstName: string;
+            lastName: string;
+            email: string;
+            password: string;
+          }
+        ) => {
+          await PrismaClients.user.create({
+            data: {
+              email,
+              firstName,
+              lastName,
+              password,
+              salt: "random Salt",
+            },
+          });
+          return true;
+        },
       },
     }, // resolvers
   });
@@ -32,7 +63,7 @@ async function init() {
 
   app.use("/graphql", expressMiddleware(gqlServer));
 
-  app.listen(PORT, () => console.log(`Server is running at ${PORT}`));
+  app.listen(PORT, () => console.log(`🚀 Server ready at ${PORT}`));
 }
 
 init();
